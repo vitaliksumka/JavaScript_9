@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>homework_9</title>
+</head>
+<body>
+    <h1>Заповніть будь ласка форму!</h1>
+    <h2>Форма GET</h2>
+    <form>
+        <label for="" >Ім'я</label><br><input type="text" id="userNameGet"><br>
+        <label for="" >Прізвище</label><br><input type="text"id="userSecondNameGet" ><br>
+        <label for="" >Вік</label><br><input type="text" id="userAgeGet"><br>
+        <label for="" >Місце проживання</label><br><input type="text"  id="userLocationGet"><br>
+        <input type="button" class="customButton" value="відправити" onclick="sendDataByGetMethod()">
+    </form>
+    <h3>Форма POST</h3>
+    <form>
+        <label for="" >Ім'я</label><br><input type="text" id="userNamePOST"><br>
+        <label for="" >Прізвище</label><br><input type="text"id="userSecondNamePOST" ><br>
+        <label for="" >Вік</label><br><input type="text" id="userAgePOST"><br>
+        <label for="" >Місце проживання</label><br><input type="text"  id="userLocationPOST"><br>
+        <input type="button" class="customButton" value="відправити" onclick="sendDataByPostMethod()">
+    </form>
+    <script>
+        function sendDataByGetMethod() {
+            var userData = {
+                userName:document.getElementById('userNameGet').value,	
+                userSecondName:document.getElementById('userSecondNameGet').value,
+                userAge:document.getElementById('userAgeGet').value,
+                userLocation:document.getElementById('userLocationGet').value          
+            };
+            if(userData.userAge > 100 || userData.userAge < 1) {
+                alert('Ви вписали відємний вік або вік більше ніж 100, виправте будь ласка!');
+            } else {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/userGet?userName="+userData.userName+"&userSecondName="+userData.userSecondName+"&userAge="+userData.userAge+"&userLocation="+userData.userLocation);
+                xhr.setRequestHeader("Content-type","application/json");
+                xhr.send();
+            } 
+        }
+        function sendDataByPostMethod() {
+            var userData = {
+                userName:document.getElementById('userNamePOST').value,	
+                userSecondName:document.getElementById('userSecondNamePOST').value,
+                userAge:document.getElementById('userAgePOST').value,
+                userLocation:document.getElementById('userLocationPOST').value
+                }; 
+                if(userData.userAge > 100 || userData.userAge < 1) {
+                    alert('Ви вписали відємний вік або вік більше ніж 100, виправте будь ласка!');
+                } else {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/userPost");
+                xhr.setRequestHeader("Content-type","application/json");
+                xhr.send(JSON.stringify(userData));
+                }
+        }
+        </script>
+</body>
+</html>
