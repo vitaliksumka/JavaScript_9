@@ -17,19 +17,19 @@ input {
     outline: none;
 }
 
-h1 {
-    text-align: center;
-}
 form {
     text-align: center;
+
 }
-h2,h3 {
+
+h1,h2 {
     font-size: 23px;
     text-align: center;
 }
+
 .customButton {
-    background-color: rgb(255, 181, 181);
-    margin-top: 20px;
+    background-color: rgb(255, 131, 131);
+    margin-top: 15px;
     width: 200px;
     height: 25px;
 }
