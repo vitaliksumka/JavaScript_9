@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <title>homework_9</title>
 </head>
 <body>
@@ -25,20 +26,59 @@
         <input type="button" class="customButton" value="відправити" onclick="sendDataByPostMethod()">
     </form>
     <script>
-        function sendDataByGetMethod() {
-            var userData = {
-                userName:document.getElementById('userNameGet').value,	
-                userSecondName:document.getElementById('userSecondNameGet').value,
-                userAge:document.getElementById('userAgeGet').value,
-                userLocation:document.getElementById('userLocationGet').value          
+   function sendDataByGetMethod() {
+	let userData = {
+		userName : $("#userNameGet").val(),
+		userSurname : $("#userSecondNameGet").val(),
+		userAge : $("#userAgeGet").val(),
+		userLocation : $("#userLocationGet").val()
+	};
+    if (isEmpty(userData.userName)) { 
+        alert("Введіть дані в полі ІМЯ!");
+    } else if (!isNaN(userData.userName)) {
+        alert("Число в полі ІМЯ недопустиме!");
+    } else if(isEmpty(userData.userSurname)) {
+        alert("Введіть дані в полі ПРІЗВИЩЕ!");
+    } else if(!isNaN(userData.userSurname)) {
+        alert("Число в полі ПРІЗВИЩЕ недопустиме!");
+    } else if (isEmpty(userData.userAge)) {
+        alert("Введіть дані в полі ВІК!");
+    } else if (isNaN(userData.userAge)) {
+        alert("Введіть число в полі ВІК!");
+    }  else if(isEmpty(userData.userLocation)) {
+        alert("Введіть дані в полі МІСЦЕ ПРОЖИВАННЯ!");
+    } else if(userData.userAge > 100 ) {
+        alert('Ви вписали  вік більше ніж 100, виправте будь ласка!');
+    } else if(userData.userAge < 1) {
+        alert('Ви вписали відємний вік, виправте будь ласка!');
+    }  else  {
+               $.ajax({
+                  type: "GET",
+                   contentType: "application/json",
+                   url: "/userGet?userNameGet=" + userData.userName + "&userSecondNameGet="
+                   + userData.userSurname + "&userAgeGet=" + userData.userAge + "&userLocationGet="
+                   + userData.userLocation,		
+                    success: function(data) {
+                       alert("Ajax GET method is completed successfully!");
+                      console.log(JSON.stringify(data));
+                    }
+              });
+           } 
+        }
+        function sendDataByPostMethod() {
+            let userData = {
+                userName : $("#userNamePOST").val(),
+                userSurname : $("#userSecondNamePOST").val(),
+                userAge : $("#userAgePOST").val(),
+                userLocation : $("#userLocationPOST").val()
             };
             if (isEmpty(userData.userName)) { 
                 alert("Введіть дані в полі ІМЯ!");
             } else if (!isNaN(userData.userName)) {
                 alert("Число в полі ІМЯ недопустиме!");
-            } else if(isEmpty(userData.userSecondName)) {
+            } else if(isEmpty(userData.userSurname)) {
                 alert("Введіть дані в полі ПРІЗВИЩЕ!");
-            } else if(!isNaN(userData.userSecondName)) {
+            } else if(!isNaN(userData.userSurname)) {
                 alert("Число в полі ПРІЗВИЩЕ недопустиме!");
             } else if (isEmpty(userData.userAge)) {
                 alert("Введіть дані в полі ВІК!");
@@ -51,44 +91,18 @@
             } else if(userData.userAge < 1) {
                 alert('Ви вписали відємний вік, виправте будь ласка!');
             }  else  {
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "/userGet?userName="+userData.userName+"&userSecondName="+userData.userSecondName+"&userAge="+userData.userAge+"&userLocation="+userData.userLocation);
-                xhr.setRequestHeader("Content-type","application/json");
-                xhr.send();
-            } 
-   }    
-        function sendDataByPostMethod() {
-            var userData = {
-                userName:document.getElementById('userNamePOST').value,	
-                userSecondName:document.getElementById('userSecondNamePOST').value,
-                userAge:document.getElementById('userAgePOST').value,
-                userLocation:document.getElementById('userLocationPOST').value
-                }; 
-                if (isEmpty(userData.userName)) { 
-                    alert("Введіть дані в полі ІМЯ!");
-                } else if (!isNaN(userData.userName)) {
-                    alert("Число в полі ІМЯ недопустиме!");
-                } else if(isEmpty(userData.userSecondName)) {
-                    alert("Введіть дані в полі ПРІЗВИЩЕ!");
-                } else if(!isNaN(userData.userSecondName)) {
-                    alert("Число в полі ПРІЗВИЩЕ недопустиме!");
-                } else if (isEmpty(userData.userAge)) {
-                    alert("Введіть дані в полі ВІК!");
-                } else if (isNaN(userData.userAge)) {
-                    alert("Введіть число в полі ВІК!");
-                }  else if(isEmpty(userData.userLocation)) {
-                    alert("Введіть дані в полі МІСЦЕ ПРОЖИВАННЯ!");
-                } else if(userData.userAge > 100 ) {
-                    alert('Ви вписали  вік більше ніж 100, виправте будь ласка!');
-                } else if(userData.userAge < 1) {
-                    alert('Ви вписали відємний вік, виправте будь ласка!');
-                }  else  {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/userPost");
-                xhr.setRequestHeader("Content-type","application/json");
-                xhr.send(JSON.stringify(userData));
-                }  
-        }
+                    $.ajax({
+                        type:  "POST",
+                        data:  JSON.stringify(userData),
+                        contentType: "application/json",
+                        url: "/userPost",
+                        success: function(data) {
+                            alert("Ajax POST method is completed successfully!");
+                            console.log(JSON.stringify(data));
+                        }
+                    });
+                 }
+             }
         function isEmpty(str) {
             return (!str || 0 === str.length);
         }
